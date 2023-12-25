@@ -1,6 +1,6 @@
 sudo apt-get -y update
 sudo apt-get -y install nginx
-echo 'Hello World' | sudo tee /var/www/html/index.html
+echo 'Hello Zeiad from script World' | sudo tee /var/www/html/index.html
 sudo service nginx start
 
 sudo apt-get -y install git-all
@@ -12,3 +12,9 @@ echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.co
 sudo apt-get update
 sudo apt-get install nodejs -y
 
+curl -fsSL https://pgp.mongodb.com/server-7.0.asc | sudo gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg  --dearmor
+cat <<EOF >/etc/apt/sources.list.d/mongodb-org-7.0.list
+EOF
+echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+sudo apt-get update
+sudo systemctl start mongod
