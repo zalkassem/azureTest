@@ -22,9 +22,9 @@ sudo systemctl enable mongod
 sudo systemctl start mongod
 cd /opt
 sudo git clone https://github.com/aelassas/wexcommerce.git
-pass=$('print crypt("2IL@ove19Pizza4_", "salt")');
-sudo useradd -s /bin/bash -d /home/aelassas/ -m -G sudo -p "$pass" aelassas;
-su aelassas
+#pass=$('print crypt("2IL@ove19Pizza4_", "salt")');
+#sudo useradd -s /bin/bash -d /home/aelassas/ -m -G sudo -p "$pass" aelassas;
+#su aelassas
 sudo chown -R $USER:$USER /opt/wexcommerce
 sudo chmod -R +x /opt/wexcommerce/__scripts
 sudo ln -s /opt/wexcommerce/__scripts/wc-deploy.sh /usr/local/bin/wc-deploy
