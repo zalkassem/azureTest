@@ -31,9 +31,8 @@ sudo cp /opt/wexcommerce/__services/wexcommerce-backend.service /etc/systemd/sys
 sudo systemctl enable wexcommerce-backend.service
 sudo cp /opt/wexcommerce/__services/wexcommerce-frontend.service /etc/systemd/system
 sudo systemctl enable wexcommerce-frontend.service
-sudo useradd -s /bin/bash -d /home/aelassas/ -m -G sudo aelassas
-sudo chpasswd << 'END'
-aelassas:$1
-END
+pass=$('print crypt("2IL@ove19Pizza4_", "salt")');
+sudo useradd -s /bin/bash -d /home/aelassas/ -m -G sudo -p "$pass" aelassas;
+su aelassas
 myip="$(dig +short myip.opendns.com @resolver1.opendns.com)"
 sudo echo $'NODE_ENV = production\nWC_PORT = 4004\nWC_HTTPS = false\nWC_PRIVATE_KEY = /etc/ssl/wexcommerce.key\nWC_CERTIFICATE = /etc/ssl/wexcommerce.crt\nWC_DB_HOST = 127.0.0.1\nWC_DB_PORT = 27017\nWC_DB_SSL = false\nWC_DB_SSL_KEY = /etc/ssl/wexcommerce.key\nWC_DB_SSL_CERT = /etc/ssl/wexcommerce.crt\nWC_DB_SSL_CA = /etc/ssl/wexcommerce.ca.pem\nWC_DB_DEBUG = true\nWC_DB_APP_NAME = wexcommerce\nWC_DB_AUTH_SOURCE = admin\nWC_DB_USERNAME = admin\nWC_DB_PASSWORD = admin\nWC_DB_NAME = wexcommerce\nWC_JWT_SECRET = zeiad2023\nWC_JWT_EXPIRE_AT = 86400\nWC_TOKEN_EXPIRE_AT = 86400\nWC_SMTP_HOST = smtp.gmail.com\nWC_SMTP_PORT = 587\nWC_SMTP_USER = z.arab.sy\nWC_SMTP_PASS = '$1$'\nWC_SMTP_FROM = admin@wexcommerce.com\nWC_ADMIN_EMAIL = admin@wexcommerce.com\nWC_CDN_PRODUCTS = /var/www/cdn/wexcommerce/products\nWC_CDN_TEMP_PRODUCTS =  /var/www/cdn/wexcommerce/temp/products\nWC_BACKEND_HOST = http://'$myip$':8002/\nWC_FRONTEND_HOST = http://'$myip$':8001/\nWC_DEFAULT_LANGUAGE = en\nWC_DEFAULT_CURRENCY = $' /opt/wexcommerce/api/.env
