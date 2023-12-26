@@ -50,4 +50,5 @@ sudo ufw allow 4004/tcp
 sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
 sudo ufw allow 3000/tcp
+sudo ufw allow 27017/tcp
 #wc-deploy all
