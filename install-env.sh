@@ -39,7 +39,70 @@ sudo echo -e "NODE_ENV = production\nWC_PORT = 4004\nWC_HTTPS = false\nWC_PRIVAT
 sudo echo -e "NEXT_PUBLIC_WC_API_HOST = http://"$myip":4004\nNEXT_PUBLIC_WC_PAGE_SIZE = 30\nNEXT_PUBLIC_WC_CDN_PRODUCTS = http://"$myip"/cdn/wexcommerce/products\nNEXT_PUBLIC_WC_CDN_TEMP_PRODUCTS = http://"$myip"/cdn/wexcommerce/temp/products\nNEXT_PUBLIC_WC_APP_TYPE = backend">> /opt/wexcommerce/backend/.env
 sudo echo -e "NEXT_PUBLIC_WC_API_HOST = http://"$myip":4004\nNEXT_PUBLIC_WC_PAGE_SIZE = 30\nNEXT_PUBLIC_WC_CDN_PRODUCTS = http://"$myip"/cdn/wexcommerce/products\nNEXT_PUBLIC_WC_CDN_TEMP_PRODUCTS = http://"$myip"/cdn/wexcommerce/temp/products\nNEXT_PUBLIC_WC_APP_TYPE = frontend">> /opt/wexcommerce/frontend/.env
 sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default-old
-sudo echo -e "server {\n\tlisten 80 default_server;\n\tserver_name _;\n\taccess_log /var/log/nginx/wexcommerce.frontend.access.log;\n\terror_log /var/log/nginx/wexcommerce.frontend.error.log;\n\n\tlocation / {\n\t\tproxy_pass http://localhost:8001;\n\t\tproxy_http_version 1.1;\n\t\tproxy_set_header Upgrade $http_upgrade;\n\t\tproxy_set_header Connection 'upgrade';\n\t\tproxy_set_header Host $host;\n\t\tproxy_cache_bypass $http_upgrade;\n\t}\n\tlocation /cdn {\n\t\talias /var/www/cdn;\n\t}\n}\n\n\nserver {\n\tlisten 3000 default_server;\n\tserver_name _;\n\taccess_log /var/log/nginx/wexcommerce.backend.access.log;\n\terror_log /var/log/nginx/wexcommerce.backend.error.log;\n\n\tlocation / {\n\t\tproxy_pass http://localhost:8002;\n\t\tproxy_http_version 1.1;\n\t\tproxy_set_header Upgrade $http_upgrade;\n\t\tproxy_set_header Connection 'upgrade';\n\t\tproxy_set_header Host $host;\n\t\tproxy_cache_bypass $http_upgrade;\n\t}\n}"> /etc/nginx/sites-available/default
+#sudo echo -e "server {\n\tlisten 80 default_server;\n\tserver_name _;\n\taccess_log /var/log/nginx/wexcommerce.frontend.access.log;\n\terror_log /var/log/nginx/wexcommerce.frontend.error.log;\n\n\tlocation / {\n\t\tproxy_pass http://localhost:8001;\n\t\tproxy_http_version 1.1;\n\t\tproxy_set_header Upgrade $http_upgrade;\n\t\tproxy_set_header Connection 'upgrade';\n\t\tproxy_set_header Host $host;\n\t\tproxy_cache_bypass $http_upgrade;\n\t}\n\tlocation /cdn {\n\t\talias /var/www/cdn;\n\t}\n}\n\n\nserver {\n\tlisten 3000 default_server;\n\tserver_name _;\n\taccess_log /var/log/nginx/wexcommerce.backend.access.log;\n\terror_log /var/log/nginx/wexcommerce.backend.error.log;\n\n\tlocation / {\n\t\tproxy_pass http://localhost:8002;\n\t\tproxy_http_version 1.1;\n\t\tproxy_set_header Upgrade $http_upgrade;\n\t\tproxy_set_header Connection 'upgrade';\n\t\tproxy_set_header Host $host;\n\t\tproxy_cache_bypass $http_upgrade;\n\t}\n}"> /etc/nginx/sites-available/default
+tee default <<EOF
+# You should look at the following URL's in order to grasp a solid understanding
+# of Nginx configuration files in order to fully unleash the power of Nginx.
+# http://wiki.nginx.org/Pitfalls
+# http://wiki.nginx.org/QuickStart
+# http://wiki.nginx.org/Configuration
+#
+# Generally, you will want to move this file somewhere, and start with a clean
+# file but keep this around for reference. Or just disable in sites-enabled.
+#
+# Please see /usr/share/doc/nginx-doc/examples/ for more detailed examples.
+##
+
+# Default server configuration
+#
+server {
+    #listen 443 http2 ssl default_server;
+    listen 80 default_server;
+    server_name _;
+
+    #ssl_certificate_key /etc/ssl/wexcommerce.key;
+    #ssl_certificate /etc/ssl/wexcommerce.pem;
+
+    access_log /var/log/nginx/wexcommerce.frontend.access.log;
+    error_log /var/log/nginx/wexcommerce.frontend.error.log;
+
+    location / {
+      # reverse proxy for next server
+      proxy_pass http://localhost:8001;
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection 'upgrade';
+      proxy_set_header Host $host;
+      proxy_cache_bypass $http_upgrade;
+    }
+
+    location /cdn {
+      alias /var/www/cdn;
+    }
+}
+server {
+    #listen 3000 http2 ssl default_server;
+    listen 3000 default_server;
+    server_name _;
+
+    #ssl_certificate_key /etc/ssl/wexcommerce.key;
+    #ssl_certificate /etc/ssl/wexcommerce.pem;
+
+    #error_page 497 301 =307 https://$host:$server_port$request_uri;
+
+    access_log /var/log/nginx/wexcommerce.backend.access.log;
+    error_log /var/log/nginx/wexcommerce.backend.error.log;
+
+    location / {
+      # reverse proxy for next server
+      proxy_pass http://localhost:8002;
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection 'upgrade';
+      proxy_set_header Host $host;
+      proxy_cache_bypass $http_upgrade;
+    }
+}
 sudo nginx -t
 sudo systemctl restart nginx.service
 sudo systemctl status nginx.service
