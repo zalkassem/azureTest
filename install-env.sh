@@ -1,6 +1,8 @@
 sudo apt-get -y update
-sudo  apt-get -y install unzip
-sudo apt-get -y install nginx
+##########################
+#sudo  apt-get -y install unzip
+#sudo apt-get -y install nginx
+##########################
 echo 'Hello Zeiad from script World' | sudo tee /var/www/html/index.html
 sudo service nginx start
 sudo apt-get -y install git-all
@@ -19,11 +21,13 @@ sudo sed -i 's/#security:/security:\n  authorization: enabled/g' mongod.conf
 sudo sed -i 's/bindIp: 127.0.0.1/bindIp: 0.0.0.0/g' mongod.conf
 sudo systemctl enable mongod
 sudo systemctl start mongod
-mongosh
-mongosh --eval "printjson(db.getSiblingDB('admin'))"
-mongosh --eval "printjson(use admin)"
-mongosh --eval "printjson(db.createUser({ user: "admin" , pwd: "$2",roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"]}))"
-mongosh --eval "printjson(exit)"
+###################
+#mongosh
+#mongosh --eval "printjson(db.getSiblingDB('admin'))"
+#mongosh --eval "printjson(use admin)"
+#mongosh --eval "printjson(db.createUser({ user: "admin" , pwd: "$2",roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"]}))"
+#mongosh --eval "printjson(exit)"
+#################################################
 cd /opt
 sudo git clone https://github.com/zalkassem/wex.git
 sudo mv wex wexcommerce
