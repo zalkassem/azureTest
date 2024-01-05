@@ -20,6 +20,7 @@ sudo systemctl enable mongod
 sudo systemctl start mongod
 cd /opt
 sudo git clone https://github.com/zalkassem/wex.git
+sudo mv wex wexcommerce
 sudo chown -R $USER:$USER /opt/wexcommerce
 sudo chmod -R +x /opt/wexcommerce/__scripts
 sudo ln -s /opt/wexcommerce/__scripts/wc-deploy.sh /usr/local/bin/wc-deploy
