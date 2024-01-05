@@ -18,6 +18,10 @@ sudo sed -i 's/#security:/security:\n  authorization: enabled/g' mongod.conf
 sudo sed -i 's/bindIp: 127.0.0.1/bindIp: 0.0.0.0/g' mongod.conf
 sudo systemctl enable mongod
 sudo systemctl start mongod
+mongosh
+mongosh --eval "printjson(db.getSiblingDB('admin'))"
+mongosh --eval "printjson(db.createUser({ user: "admin" , pwd: "admin",roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"]}))"
+mongosh --eval "printjson(exit)"
 cd /opt
 sudo git clone https://github.com/zalkassem/wex.git
 sudo mv wex wexcommerce
@@ -35,7 +39,7 @@ sudo echo -e "NODE_ENV = production\nWC_PORT = 4004\nWC_HTTPS = false\nWC_PRIVAT
 sudo echo -e "NEXT_PUBLIC_WC_API_HOST = http://"$myip":4004\nNEXT_PUBLIC_WC_PAGE_SIZE = 30\nNEXT_PUBLIC_WC_CDN_PRODUCTS = http://"$myip"/cdn/wexcommerce/products\nNEXT_PUBLIC_WC_CDN_TEMP_PRODUCTS = http://"$myip"/cdn/wexcommerce/temp/products\nNEXT_PUBLIC_WC_APP_TYPE = backend">> /opt/wexcommerce/backend/.env
 sudo echo -e "NEXT_PUBLIC_WC_API_HOST = http://"$myip":4004\nNEXT_PUBLIC_WC_PAGE_SIZE = 30\nNEXT_PUBLIC_WC_CDN_PRODUCTS = http://"$myip"/cdn/wexcommerce/products\nNEXT_PUBLIC_WC_CDN_TEMP_PRODUCTS = http://"$myip"/cdn/wexcommerce/temp/products\nNEXT_PUBLIC_WC_APP_TYPE = frontend">> /opt/wexcommerce/frontend/.env
 sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default-old
-sudo echo -e "server {\n\tlisten 80 default_server;\n\tserver_name _;\n\taccess_log /var/log/nginx/wexcommerce.frontend.access.log;\n\terror_log /var/log/nginx/wexcommerce.frontend.error.log;\n\n\tlocation / {\n\t\tproxy_pass http://localhost:8001;\n\t\tproxy_http_version 1.1;\n\t\tproxy_set_header Upgrade $http_upgrade;\n\t\tproxy_set_header Connection 'upgrade';\n\t\tproxy_set_header Host $host;\n\t\tproxy_cache_bypass $http_upgrade;\n\t}\n\tlocation /cdn {\n\t\talias /var/www/cdn;\n\t}\n}\n\n\nserver {\n\tlisten 3000 default_server;\n\tserver_name _;\n\taccess_log /var/log/nginx/wexcommerce.backend.access.log;\n\terror_log /var/log/nginx/wexcommerce.backend.error.log;\n\n\tlocation / {\n\t\tproxy_pass http://localhost:8002;\n\t\tproxy_http_version 1.1;\n\t\tproxy_set_header Upgrade $http_upgrade;\n\t\tproxy_set_header Connection 'upgrade';\n\t\tproxy_set_header Host $host;\n\t\tproxy_cache_bypass $http_upgrade;\n\t}\n}"> /etc/nginx/sites-available/default
+sudo echo -e "server {\n\tlisten 80 default_server;\n\tserver_name _;\n\taccess_log /var/log/nginx/wexcommerce.frontend.access.log;\n\terror_log /var/log/nginx/wexcommerce.frontend.error.log;\n\n\tlocation / {\n\tproxy_pass http://localhost:8001;\n\tproxy_http_version 1.1;\n\tproxy_set_header Upgrade \$http_upgrade;\n\tproxy_set_header Connection 'upgrade';\n\tproxy_set_header Host \$host;\n\tproxy_cache_bypass \$http_upgrade;\n\t}\n\tlocation /cdn {\n\talias /var/www/cdn;\n\t}\n}\n\n\nserver {\n\tlisten 3000 default_server;\n\tserver_name _;\n\taccess_log /var/log/nginx/wexcommerce.backend.access.log;\n\terror_log /var/log/nginx/wexcommerce.backend.error.log;\n\n\tlocation / {\n\tproxy_pass http://localhost:8002;\n\tproxy_http_version 1.1;\n\tproxy_set_header Upgrade \$http_upgrade;\n\tproxy_set_header Connection 'upgrade';\n\tproxy_set_header Host \$host;\n\tproxy_cache_bypass \$http_upgrade;\n\t}\n}"> /etc/nginx/sites-available/default
 sudo nginx -t
 sudo systemctl restart nginx.service
 sudo systemctl status nginx.service
