@@ -20,6 +20,7 @@ sudo systemctl enable mongod
 sudo systemctl start mongod
 mongosh
 mongosh --eval "printjson(db.getSiblingDB('admin'))"
+mongosh --eval "printjson(use admin)"
 mongosh --eval "printjson(db.createUser({ user: "admin" , pwd: "admin",roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"]}))"
 mongosh --eval "printjson(exit)"
 cd /opt
