@@ -16,7 +16,7 @@ sudo apt-get update
 sudo apt-get install -y mongodb-org
 cd /tmp
 sudo echo -e "db = connect( 'mongodb://localhost/admin' );\n\ndb.createUser(\n\t{\n\tuser: \"admin\",\n\tpwd: \""$2"\",\n\troles: [\n\t\t\"userAdminAnyDatabase\",\n\t\t\"dbAdminAnyDatabase\",\n\t\t\"readWriteAnyDatabase\",\n\t\t]\n\t}\n)" >load.js
-mongosh load /tmp/load.js
+sudo mongosh load /tmp/load.js
 sudo systemctl enable mongod
 sudo systemctl start mongod
 cd /etc
