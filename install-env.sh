@@ -14,6 +14,8 @@ curl -fsSL https://pgp.mongodb.com/server-7.0.asc | sudo gpg -o /usr/share/keyri
 echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
 sudo apt-get update
 sudo apt-get install -y mongodb-org
+sudo systemctl enable mongod
+sudo systemctl start mongod
 ###################
 #mongosh --eval "printjson(db.getSiblingDB('admin'))"
 #mongosh --eval "printjson(use admin)"
@@ -28,8 +30,7 @@ echo "exit"
 cd /etc
 sudo sed -i 's/#security:/security:\n  authorization: enabled/g' mongod.conf
 sudo sed -i 's/bindIp: 127.0.0.1/bindIp: 0.0.0.0/g' mongod.conf
-sudo systemctl enable mongod
-sudo systemctl start mongod
+sudo systemctl restart mongod
 cd /opt
 sudo git clone https://github.com/zalkassem/wex.git
 sudo mv wex wexcommerce
