@@ -29,7 +29,7 @@ sudo systemctl start mongod
 mongosh --quiet  --host 127.0.0.1 --port 27017
 mongosh  --eval "EJSON.stringify(db.getSiblingDB('admin'));"
 mongosh  --eval "EJSON.stringify(use admin));"
-mongosh  --eval 'EJSON.stringify(db.createUser({ user: "admin" , pwd: "admin",roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"]})));'
+mongosh  --eval 'EJSON.stringify(db.createUser({ user: "admin" , pwd: "$2",roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"]})));'
 mongosh  --eval "EJSON.stringify(exit));"
 cd /opt
 sudo git clone https://github.com/zalkassem/wex.git
