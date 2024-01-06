@@ -1,8 +1,6 @@
 sudo apt-get -y update
-##########################
-#sudo  apt-get -y install unzip
-#sudo apt-get -y install nginx
-##########################
+sudo  apt-get -y install unzip
+sudo apt-get -y install nginx
 echo 'Hello Zeiad from script World' | sudo tee /var/www/html/index.html
 sudo service nginx start
 sudo apt-get -y install git-all
@@ -28,6 +26,11 @@ sudo systemctl start mongod
 #mongosh --eval "printjson(db.createUser({ user: "admin" , pwd: "$2",roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"]}))"
 #mongosh --eval "printjson(exit)"
 #################################################
+mongosh --quiet  --host 127.0.0.1 --port 27017
+mongosh  --eval "EJSON.stringify(db.getSiblingDB('admin'));"
+mongosh  --eval "EJSON.stringify(use admin));"
+mongosh  --eval 'EJSON.stringify(db.createUser({ user: "admin" , pwd: "admin",roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"]})));'
+mongosh  --eval "EJSON.stringify(exit));"
 cd /opt
 sudo git clone https://github.com/zalkassem/wex.git
 sudo mv wex wexcommerce
@@ -51,6 +54,8 @@ sudo systemctl restart nginx.service
 sudo systemctl status nginx.service
 sudo mkdir /var/www/cdn
 sudo mkdir /var/www/cdn/wexcommerce
+sudo apt-get -y update
+sudo  apt-get -y install unzip
 sudo cd /tmp
 sudo mkdir db
 cd db
