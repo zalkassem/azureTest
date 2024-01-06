@@ -63,6 +63,8 @@ sudo wget https://github.com/zalkassem/azureTest/blob/main/wexcommerce-db.zip
 sudo unzip wexcommerce-db.zip
 sudo unzip cdn.zip /var/www/cdn/wexcommerce
 #mongorestore --verbose --drop --gzip --host=127.0.0.1 --port=27017 --username=admin --password=admin --authenticationDatabase=admin --nsInclude="wexcommerce.*" --archive=wexcommerce.gz
+curl -fsSL https://deb.nodesource.com/setup_21.x | sudo -E bash - &&\
+sudo apt-get install -y nodejs
 sudo ufw enable
 sudo ufw allow ssh
 sudo ufw allow 22/tcp
