@@ -55,14 +55,15 @@ sudo systemctl status nginx.service
 sudo mkdir /var/www/cdn
 sudo mkdir /var/www/cdn/"$3"
 sudo apt-get -y update
-sudo  apt-get -y install unzip
+sudo apt-get -y install unzip
 sudo cd /tmp
 sudo mkdir db
 cd db
-sudo wget https://github.com/zalkassem/azureTest/blob/main/wexcommerce-db.zip
-sudo unzip wexcommerce-db.zip
-sudo unzip cdn.zip /var/www/cdn/"$3"
-#mongorestore --verbose --drop --gzip --host=127.0.0.1 --port=27017 --username=admin --password=admin --authenticationDatabase=admin --nsInclude="wexcommerce.*" --archive=wexcommerce.gz
+sudo git clone https://github.com/zalkassem/wexDb.git
+cd wexDb/
+sudo cp -r products /var/www/cdn/"$3"
+sudo mkdir /var/www/cdn/"$3"/temp
+mongorestore --verbose --drop --gzip --host=127.0.0.1 --port=27017 --username=admin --password="$2" --authenticationDatabase=admin --nsInclude="wexcommerce.*" --archive=wexcommerce.gz
 sudo ufw enable
 sudo ufw allow ssh
 sudo ufw allow 22/tcp
