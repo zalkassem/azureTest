@@ -23,10 +23,10 @@ sudo systemctl start mongod
 #mongosh --eval "printjson(exit)"
 #################################################
 mongosh --quiet  --host 127.0.0.1 --port 27017
-echo "db.getSiblingDB('admin');"
-echo "use admin"
-echo 'db.createUser({ user: "admin" , pwd: "$2",roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"]})'
-echo "exit"
+db.getSiblingDB('admin');
+use admin
+db.createUser({ user: "admin" , pwd: "$2",roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"]})
+exit
 cd /etc
 sudo sed -i 's/#security:/security:\n  authorization: enabled/g' mongod.conf
 sudo sed -i 's/bindIp: 127.0.0.1/bindIp: 0.0.0.0/g' mongod.conf
