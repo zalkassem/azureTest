@@ -32,7 +32,7 @@ sudo sed -i 's/#security:/security:\n  authorization: enabled/g' mongod.conf
 sudo sed -i 's/bindIp: 127.0.0.1/bindIp: 0.0.0.0/g' mongod.conf
 sudo systemctl restart mongod
 cd /opt
-sudo git clone https://github.com/zalkassem/wex.git
+sudo git clone https://github.com/zalkassem/wexcommerce.git
 sudo mv wex wexcommerce
 sudo chown -R $USER:$USER /opt/wexcommerce
 sudo chmod -R +x /opt/wexcommerce/__scripts
