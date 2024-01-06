@@ -14,17 +14,9 @@ curl -fsSL https://pgp.mongodb.com/server-7.0.asc | sudo gpg -o /usr/share/keyri
 echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
 sudo apt-get update
 sudo apt-get install -y mongodb-org
-###################
-mongosh --eval "printjson(db.getSiblingDB('admin'))" --eval "printjson(use admin)" --eval "printjson(db.createUser({ user: "admin" , pwd: "$2",roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"]}))"
-#mongosh --eval "printjson(use admin)"
-#mongosh --eval "printjson(db.createUser({ user: "admin" , pwd: "$2",roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"]}))"
-#mongosh --eval "printjson(exit)"
-#################################################
-#mongosh --quiet  --host 127.0.0.1 --port 27017
-#db.getSiblingDB('admin');
-#use admin
-#db.createUser({ user: "admin" , pwd: "$2",roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"]})
-#exit
+cd /tmp
+sudo echo -e "db = connect( 'mongodb://localhost/admin' );\n\ndb.createUser(\n\t{\n\tuser: \"admin\",\n\tpwd: \""$2"\",\n\troles: [\n\t\t\"userAdminAnyDatabase\",\n\t\t\"dbAdminAnyDatabase\",\n\t\t\"readWriteAnyDatabase\",\n\t\t]\n\t}\n)" >load.js
+mongosh load /tmp/load.js
 sudo systemctl enable mongod
 sudo systemctl start mongod
 cd /etc
@@ -63,7 +55,7 @@ sudo git clone https://github.com/zalkassem/wexDb.git
 cd wexDb/
 sudo cp -r products /var/www/cdn/"$3"
 sudo mkdir /var/www/cdn/"$3"/temp
-#mongorestore --verbose --drop --gzip --host=127.0.0.1 --port=27017 --username=admin --password="$2" --authenticationDatabase=admin --nsInclude="wexcommerce.*" --archive=wexcommerce.gz
+mongorestore --verbose --drop --gzip --host=127.0.0.1 --port=27017 --username=admin --password="$2" --authenticationDatabase=admin --nsInclude="wexcommerce.*" --archive=wexcommerce.gz
 sudo ufw enable
 sudo ufw allow ssh
 sudo ufw allow 22/tcp
