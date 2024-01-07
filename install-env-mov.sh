@@ -28,13 +28,13 @@ cd /opt
 sudo git clone https://github.com/zalkassem/"$3".git
 sudo chown -R $USER:$USER /opt/"$3"
 sudo chmod -R +x /opt/"$3"/__scripts
-sudo ln -s /opt/"$3"/__scripts/wc-deploy.sh /usr/local/bin/wc-deploy
-sudo cp /opt/"$3"/__services/"$3".service /etc/systemd/system
+sudo ln -s /opt/"$3"/__scripts/mi-deploy.sh /usr/local/bin/mi-deploy
+sudo cp /opt/"$3"/__services/movinin.service /etc/systemd/system
 sudo systemctl enable "$3".service
-sudo cp /opt/"$3"/__services/"$3"-backend.service /etc/systemd/system
-sudo systemctl enable "$3"-backend.service
-sudo cp /opt/"$3"/__services/"$3"-frontend.service /etc/systemd/system
-sudo systemctl enable "$3"-frontend.service
+#sudo cp /opt/"$3"/__services/"$3"-backend.service /etc/systemd/system
+#sudo systemctl enable "$3"-backend.service
+#sudo cp /opt/"$3"/__services/"$3"-frontend.service /etc/systemd/system
+#sudo systemctl enable "$3"-frontend.service
 myip="$(dig +short myip.opendns.com @resolver1.opendns.com)"
 sudo echo -e "NODE_ENV = production\nWC_PORT = 4004\nWC_HTTPS = false\nWC_PRIVATE_KEY = /etc/ssl/"$3".key\nWC_CERTIFICATE = /etc/ssl/"$3".crt\nWC_DB_HOST = 127.0.0.1\nWC_DB_PORT = 27017\nWC_DB_SSL = false\nWC_DB_SSL_KEY = /etc/ssl/"$3".key\nWC_DB_SSL_CERT = /etc/ssl/"$3".crt\nWC_DB_SSL_CA = /etc/ssl/"$3".ca.pem\nWC_DB_DEBUG = true\nWC_DB_APP_NAME = "$3"\nWC_DB_AUTH_SOURCE = admin\nWC_DB_USERNAME = admin\nWC_DB_PASSWORD = "$2"\nWC_DB_NAME = "$3"\nWC_JWT_SECRET = zeiad2023\nWC_JWT_EXPIRE_AT = 86400\nWC_TOKEN_EXPIRE_AT = 86400\nWC_SMTP_HOST = smtp.gmail.com\nWC_SMTP_PORT = 465\nWC_SMTP_USER = z.arab.sy@gmail.com\nWC_SMTP_PASS = "$1"\nWC_SMTP_FROM = z.arab.sy@gmail.com\nWC_ADMIN_EMAIL = z.arab.sy@gmail.com\nWC_CDN_PRODUCTS = /var/www/cdn/"$3"/products\nWC_CDN_TEMP_PRODUCTS = /var/www/cdn/"$3"/temp/products\nWC_BACKEND_HOST = http://"$myip":8002/\nWC_FRONTEND_HOST = http://"$myip":8001/\nWC_DEFAULT_LANGUAGE = en\nWC_DEFAULT_CURRENCY = $">> /opt/"$3"/api/.env
 sudo echo -e "NEXT_PUBLIC_WC_API_HOST = http://"$myip":4004\nNEXT_PUBLIC_WC_PAGE_SIZE = 30\nNEXT_PUBLIC_WC_CDN_PRODUCTS = http://"$myip"/cdn/"$3"/products\nNEXT_PUBLIC_WC_CDN_TEMP_PRODUCTS = http://"$myip"/cdn/"$3"/temp/products\nNEXT_PUBLIC_WC_APP_TYPE = backend">> /opt/"$3"/backend/.env
