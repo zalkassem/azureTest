@@ -46,7 +46,7 @@ sudo systemctl restart nginx.service
 sudo systemctl status nginx.service
 sudo mkdir /var/www/cdn
 sudo mkdir /var/www/cdn/"$3"
-sudo cd /tmp
+cd /tmp
 sudo mkdir db
 cd db
 sudo git clone https://github.com/zalkassem/wexDb.git
