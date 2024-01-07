@@ -63,6 +63,6 @@ sudo ufw allow 22/tcp
 sudo ufw allow 4004/tcp
 sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
-sudo ufw allow 3000/tcp
+sudo ufw allow 3003/tcp
 sudo ufw allow 27017/tcp
 sudo ufw allow 465/tcp
